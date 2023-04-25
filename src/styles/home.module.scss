@@ -42,10 +42,11 @@
   padding: 14px 0px;
   border-radius: 4px;
   transition: transform 0.4s;
-}
 
-.box:hover {
-  transform: scale(1.08);
+  &:hover {
+    transform: scale(1.08);
+  }
+
 }
 
 @media screen and (max-width: 580px) {

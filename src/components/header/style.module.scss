@@ -16,17 +16,13 @@
   justify-content: space-between;
 }
 
-.nav a {
-  text-decoration: none;
-}
-
 .logo {
   color: #fff;
   font-size: 32px;
-}
 
-.logo span {
-  color: #ea3140;
+  span {
+    color: #ea3140;
+  }
 }
 
 .loginButton {
@@ -37,39 +33,46 @@
   border: 1.5px solid #fff;
   cursor: pointer;
   transition: all 0.4s;
-}
 
-.loginButton:hover {
-  transform: scale(1.08);
-  background-color: #fff;
-  color: #0f0f0f;
-  font-weight: bold;
-}
+  &:hover {
+    transform: scale(1.08);
+    background-color: #fff;
+    color: #0f0f0f;
+    font-weight: bold;
+  }
 
-.loginButton:active {
-  transform: scale(1);
+  &:active {
+    transform: scale(1);
+  }
 }
 
 .nav {
   display: flex;
   align-items: center;
+
+  a {
+    text-decoration: none;
+  }
 }
 
 .dashboardButton {
   background-color: #0f0f0f;
   color: #f1f1f1;
   padding: 4px 14px;
+  min-width: 140px;
+  text-align: center;
   border-bottom: 1.5px solid #f1f1f1;
   margin: 0 24px;
   transition: padding 0.4s;
-}
 
-.dashboardButton:hover {
-  font-weight: 600;
-  border-width: 1.8px;
-}
+  &:hover {
+    font-weight: 600;
+    border-width: 1.8px;
+  }
 
-.dashboardButton:active {
-  font-weight: 100;
-  border-width: 1.5px;
+  &:active {
+    font-weight: 100;
+    border-width: 1.5px;
+  }
+
 }
