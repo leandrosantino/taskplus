@@ -1,8 +1,13 @@
+import { useSession, signIn, signOut } from 'next-auth/react'
 import Link from 'next/link'
 import styles from './style.module.scss'
 
 
+
 export default function Header() {
+
+  const { data: session, status } = useSession()
+
   return (
     <header className={styles.header}>
       <section className={styles.content}>
@@ -12,15 +17,39 @@ export default function Header() {
               Task<span>Plus</span>
             </h1>
           </Link>
-          <Link
-            href='/dashboard'
-            className={styles.dashboardButton}
-          >
-            My dashboard
-          </Link>
+          {
+            session?.user &&
+            <Link
+              href='/dashboard'
+              className={styles.dashboardButton}
+            >
+              My dashboard
+            </Link>
+          }
         </nav>
-        <button className={styles.loginButton}>Login</button>
+
+        {
+          status === 'loading' ?
+            <></> :
+            session ?
+              <button
+                className={styles.loginButton}
+                onClick={() => signOut()}
+              >
+                {session?.user?.name}
+              </button> :
+              <button
+                className={styles.loginButton}
+                onClick={() => signIn("google")}
+              >
+                Login
+              </button>
+        }
+
+
       </section>
     </header>
   )
 }
+
+
