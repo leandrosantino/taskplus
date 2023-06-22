@@ -1,7 +1,6 @@
 import Head from 'next/head'
 import styles from './styles.module.scss'
-import { GetServerSideProps } from 'next'
-import { getSession } from 'next-auth/react'
+import { FaShare, FaTrash } from 'react-icons/fa'
 import { Textarea } from '@/components/textarea'
 
 export default function Dashboard() {
@@ -30,23 +29,31 @@ export default function Dashboard() {
 
           </div>
         </section>
+        <section className={styles.taskContainer}>
+          <h1>My Tasks</h1>
+
+          <article className={styles.task}>
+            <div className={styles.tagContainer}>
+              <label className={styles.tag}>PUBLIC</label>
+              <button className={styles.shareButton} >
+                <FaShare size={22} color="#3182FF" />
+              </button>
+            </div>
+
+            <div className={styles.taskContent}>
+              <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus sed non nihil perferendis reiciendis odio pariatur quod, suscipit cupiditate ullam eum obcaecati. Beatae, officia explicabo quia tenetur consequuntur itaque obcaecati?</p>
+              <button className={styles.trashButton}>
+                <FaTrash size={24} color='#EA3140' />
+              </button>
+            </div>
+
+          </article>
+
+        </section>
+
       </main>
 
     </div>
   )
 }
 
-export const getServerSideProps: GetServerSideProps = async ({ req }) => {
-  const session = await getSession({ req })
-  if (!session?.user) {
-    return {
-      redirect: {
-        destination: '/',
-        permanent: false
-      }
-    }
-  }
-  return {
-    props: {}
-  }
-}
