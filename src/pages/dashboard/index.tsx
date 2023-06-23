@@ -4,8 +4,41 @@ import { FaShare, FaTrash } from 'react-icons/fa'
 import { Textarea } from '@/components/textarea'
 import { GetServerSideProps } from 'next'
 import { getSession } from 'next-auth/react'
+import { ChangeEvent, FormEvent, useState } from 'react'
 
-export default function Dashboard() {
+import {db} from '../../services/FirebaseConnection'
+import {collection, addDoc} from 'firebase/firestore'
+
+export default function Dashboard({user}: {user: {email: string}}) {
+
+  const [input, setInput] = useState('')
+  const [publicTask, setPublicTask] = useState(false)
+
+  async function handleRegisterTask(e: FormEvent) {
+    e.preventDefault()
+
+    if(input === '') return;
+
+    try{
+
+      await addDoc(collection(db, 'tasks'), {
+        tarefa: input,
+        created: new Date(),
+        user: user.email,
+        public: publicTask
+      })
+
+
+      setInput('')
+      setPublicTask(false)
+
+    }catch(err){
+      console.log(err)
+    }
+
+  }
+
+
   return (
     <div className={styles.container} >
 
@@ -18,11 +51,22 @@ export default function Dashboard() {
           <div className={styles.contentForm}>
             <h1 className={styles.title}>What is your task</h1>
 
-            <form action="">
-              <Textarea placeholder='Type What is your task...' />
+            <form onSubmit={handleRegisterTask}>
+              <Textarea
+                placeholder='Type What is your task...'
+                value={input}
+                onChange={(e: ChangeEvent<HTMLTextAreaElement>) => setInput(e.target.value)}
+              />
 
               <div className={styles.checkboxArea}>
-                <input type="checkbox" id="chekbox" />
+                <input
+                  type="checkbox"
+                  id="chekbox"
+                  checked={publicTask}
+                  onChange={(e) => {
+                    setPublicTask(e.target.checked)
+                  }}
+                />
                 <label htmlFor="chekbox">Leave task public?</label>
               </div>
 
@@ -70,7 +114,11 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
     }
   }
   return {
-    props: {}
+    props: {
+      user: {
+        email:session.user.email
+      }
+    }
   }
 }
 
