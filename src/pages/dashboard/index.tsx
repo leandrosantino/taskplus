@@ -4,25 +4,67 @@ import { FaShare, FaTrash } from 'react-icons/fa'
 import { Textarea } from '@/components/textarea'
 import { GetServerSideProps } from 'next'
 import { getSession } from 'next-auth/react'
-import { ChangeEvent, FormEvent, useState } from 'react'
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react'
 
-import {db} from '../../services/FirebaseConnection'
-import {collection, addDoc} from 'firebase/firestore'
+import { db } from '../../services/FirebaseConnection'
+import { collection, addDoc, query, orderBy, where, onSnapshot, doc } from 'firebase/firestore'
+import Link from 'next/link'
 
-export default function Dashboard({user}: {user: {email: string}}) {
+interface TaskProps {
+  id: string
+  created: Date
+  public: boolean
+  content: string
+  user: string
+}
+
+export default function Dashboard({ user }: { user: { email: string } }) {
 
   const [input, setInput] = useState('')
   const [publicTask, setPublicTask] = useState(false)
+  const [taskList, setTaskList] = useState<TaskProps[]>([])
+
+
+  useEffect(() => {
+    (async () => {
+
+      const tasksQuery = query(
+        collection(db, 'tasks'),
+        orderBy('created'),
+        where('user', '==', user.email)
+      )
+
+      onSnapshot(tasksQuery, (snapshot) => {
+
+        const list = [] as TaskProps[]
+
+        snapshot.forEach(doc => {
+          list.push({
+            id: doc.id,
+            created: doc.data().created,
+            content: doc.data().content,
+            public: doc.data().public,
+            user: doc.data().user,
+          })
+
+          setTaskList(list)
+
+        })
+
+      })
+
+    })()
+  }, [user.email])
 
   async function handleRegisterTask(e: FormEvent) {
     e.preventDefault()
 
-    if(input === '') return;
+    if (input === '') return;
 
-    try{
+    try {
 
       await addDoc(collection(db, 'tasks'), {
-        tarefa: input,
+        content: input,
         created: new Date(),
         user: user.email,
         public: publicTask
@@ -32,10 +74,17 @@ export default function Dashboard({user}: {user: {email: string}}) {
       setInput('')
       setPublicTask(false)
 
-    }catch(err){
+    } catch (err) {
       console.log(err)
     }
 
+  }
+
+  async function handleShare(id: string) {
+    await navigator.clipboard.writeText(
+      `${window.location.host}/task/${id}`
+    )
+    alert('Link da tarefa copiado com sucesso!')
   }
 
 
@@ -78,23 +127,36 @@ export default function Dashboard({user}: {user: {email: string}}) {
         <section className={styles.taskContainer}>
           <h1>My Tasks</h1>
 
-          <article className={styles.task}>
-            <div className={styles.tagContainer}>
-              <label className={styles.tag}>PUBLIC</label>
-              <button className={styles.shareButton} >
-                <FaShare size={22} color="#3182FF" />
-              </button>
-            </div>
 
-            <div className={styles.taskContent}>
-              <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus sed non nihil perferendis reiciendis odio pariatur quod, suscipit cupiditate ullam eum obcaecati. Beatae, officia explicabo quia tenetur consequuntur itaque obcaecati?</p>
-              <button className={styles.trashButton}>
-                <FaTrash size={24} color='#EA3140' />
-              </button>
-            </div>
+          {taskList.map(task => (
+            <article key={task.id} className={styles.task}>
 
-          </article>
+              {task.public &&
+                <div className={styles.tagContainer}>
+                  <label className={styles.tag}>PUBLIC</label>
+                  <button className={styles.shareButton} onClick={() => handleShare(task.id)}>
+                    <FaShare size={22} color="#3182FF" />
+                  </button>
+                </div>
+              }
 
+              <div className={styles.taskContent}>
+
+                {task.public ?
+                  <Link href={`/task/${task.id}`}>
+                    <p>{task.content}</p>
+                  </Link>
+                  :
+                  <p>{task.content}</p>
+                }
+
+                <button className={styles.trashButton}>
+                  <FaTrash size={24} color='#EA3140' />
+                </button>
+              </div>
+
+            </article>
+          ))}
         </section>
 
       </main>
@@ -116,7 +178,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   return {
     props: {
       user: {
-        email:session.user.email
+        email: session.user.email
       }
     }
   }
