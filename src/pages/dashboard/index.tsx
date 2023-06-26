@@ -7,7 +7,7 @@ import { getSession } from 'next-auth/react'
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react'
 
 import { db } from '../../services/FirebaseConnection'
-import { collection, addDoc, query, orderBy, where, onSnapshot, doc } from 'firebase/firestore'
+import { collection, addDoc, query, orderBy, where, onSnapshot, doc, deleteDoc } from 'firebase/firestore'
 import Link from 'next/link'
 
 interface TaskProps {
@@ -30,7 +30,7 @@ export default function Dashboard({ user }: { user: { email: string } }) {
 
       const tasksQuery = query(
         collection(db, 'tasks'),
-        orderBy('created'),
+        orderBy('created', 'asc'),
         where('user', '==', user.email)
       )
 
@@ -85,6 +85,10 @@ export default function Dashboard({ user }: { user: { email: string } }) {
       `${window.location.host}/task/${id}`
     )
     alert('Link da tarefa copiado com sucesso!')
+  }
+
+  async function handleDeleteTask(id: string) {
+    await deleteDoc(doc(db, 'tasks', id))
   }
 
 
@@ -150,7 +154,7 @@ export default function Dashboard({ user }: { user: { email: string } }) {
                   <p>{task.content}</p>
                 }
 
-                <button className={styles.trashButton}>
+                <button className={styles.trashButton} onClick={() => handleDeleteTask(task.id)}>
                   <FaTrash size={24} color='#EA3140' />
                 </button>
               </div>
