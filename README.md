@@ -35,7 +35,7 @@ projetos de estudo.
 
 O TaskPlus esta hospedado na "Vercel", você pode acessá-lo no endereço:
 
-[taskplus.vercel.app](https://taskplus.vercel.app)
+[taskplus-xi.vercel.app](https://taskplus-xi.vercel.app/)
 
 #### Link para o Repositório
 
