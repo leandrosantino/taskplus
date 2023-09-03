@@ -41,6 +41,10 @@ O TaskPlus esta hospedado na "Vercel", você pode acessá-lo no endereço:
 
 [github.com/leandrosantino/taskplus](https://github.com/leandrosantino/taskplus)
 
+#### Post no Linkedin
+
+[Linkedin - leandrosantino_taskplus](https://www.linkedin.com/posts/leandro-santino-7b2717215_recentemente-eu-comecei-a-estudar-nextjs-activity-7082340699534147584--g1F?utm_source=share&utm_medium=member_desktop)
+
 ## Licença
 
 MIT
