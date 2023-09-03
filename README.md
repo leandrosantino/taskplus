@@ -7,8 +7,8 @@ Ele possui autenticação com o Google e utiliza o Firebase como base de dados.
 Esse projeto foi proposto como um dos exercícios do curso de Next que estou
 fazendo.
 
-![image1](https://github.com/leandrosantino/taskplus/blob/main/public/image2.png?raws=true)
-![image1](https://github.com/leandrosantino/taskplus/blob/main/public/image1.png?raw=true)
+![image1](https://raw.githubusercontent.com/leandrosantino/taskplus/main/public/image2.png)
+![image2](https://raw.githubusercontent.com/leandrosantino/taskplus/main/public/image1.png)
 
 ## Funcionalidades
 
