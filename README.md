@@ -7,7 +7,7 @@ Ele possui autenticação com o Google e utiliza o Firebase como base de dados.
 Esse projeto foi proposto como um dos exercícios do curso de Next que estou
 fazendo.
 
-![image1](https://github.com/leandrosantino/taskplus/blob/main/public/image2.png?raw=true)
+![image1](https://github.com/leandrosantino/taskplus/blob/main/public/image2.png?raws=true)
 ![image1](https://github.com/leandrosantino/taskplus/blob/main/public/image1.png?raw=true)
 
 ## Funcionalidades
@@ -19,7 +19,7 @@ fazendo.
 
 ## Aprendizados
 
-Como esse foi o meu primeiro projeto utilizando o Frameworx NextJs, ele foi um
+Como esse foi o meu primeiro projeto utilizando o Framework NextJs, ele foi um
 divisor de águas no meu aprendizado desta tecnologia tão poderosa.
 
 Trabalhar com NextJs, com certeza traz muitas vantagens para o desenvolvimento
